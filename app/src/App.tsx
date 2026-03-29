@@ -1,6 +1,6 @@
 
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
-import { AeraProvider } from './contexts/useAeraBrain';
+import { AeraProvider } from './context/AeraContext';
 import OnboardingChat from './pages/OnboardingChat';
 import Dashboard from './pages/Dashboard';
 import PorteDataEntry from './pages/PorteDataEntry';

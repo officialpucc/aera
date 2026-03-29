@@ -25,7 +25,7 @@ export interface Transaction {
 }
 
 export type EstablishmentType = "Bar" | "Coworking" | "Gym" | "Cafe";
-export type HardwareStatus = "healthy" | "jammed" | "unreturned_pucc_timeout";
+export type HardwareStatus = "healthy" | "jammed" | "unreturned_pucc_timeout" | "connectivity_drop";
 
 export interface PorteState {
     id: string;
