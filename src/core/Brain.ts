@@ -290,5 +290,38 @@ export class AeraBrain {
         }
     }
 
+    /**
+     * Physical World Bridge: Registering a new session from a Porte NFC tap.
+     */
+    public registerNewSession(porteId: string, amount: number) {
+        const porte = this.state.operations.portes[porteId];
+        if (porte && porte.available_puccs > 0) {
+            porte.active_detox_sessions++;
+            porte.available_puccs--;
+            porte.phone_cubbies_occupied++;
+            
+            // Ledger: Record revenue
+            this.state.finances.cash_on_hand += amount;
+            this.state.sales.total_session_fees += amount;
+            
+            console.log(`[CORTEX] New session registered at ${porteId}. Total Fees: $${this.state.sales.total_session_fees}`);
+            this.notify();
+        }
+    }
+
+    /**
+     * Physical World Bridge: Ending a session via PUCC return.
+     */
+    public endSession(porteId: string) {
+        const porte = this.state.operations.portes[porteId];
+        if (porte && porte.active_detox_sessions > 0) {
+            porte.active_detox_sessions--;
+            porte.available_puccs++;
+            porte.phone_cubbies_occupied--;
+            console.log(`[CORTEX] Session ended at ${porteId}. PUCC returned to cubby.`);
+            this.notify();
+        }
+    }
+
     public getState() { return this.state; }
 }

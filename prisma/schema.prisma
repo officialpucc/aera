@@ -1,0 +1,44 @@
+// prisma/schema.prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model BusinessState {
+  id              Int      @id @default(1)
+  cash_on_hand    Float
+  burn_rate       Float
+  cogs            Float
+  updated_at      DateTime @updatedAt
+}
+
+model Porte {
+  id                 String   @id
+  establishment_type String
+  available_puccs    Int
+  hardware_status    String
+  session_price      Float    @default(5.00)
+  sessions           Session[]
+}
+
+model Session {
+  id         String   @id @default(uuid())
+  porte      Porte    @relation(fields: [porte_id], references: [id])
+  porte_id   String
+  status     String   // "active" | "completed" | "timed_out"
+  start_time DateTime @default(now())
+  end_time   DateTime?
+  amount     Float
+}
+
+model Transaction {
+  id        String   @id @default(uuid())
+  type      String   // "sale" | "rental"
+  item_id   String
+  amount    Float
+  timestamp DateTime @default(now())
+}
